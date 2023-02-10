@@ -1,0 +1,5 @@
+autopep8==2.0.1
+Flask==2.2.2
+Flask-Cors==3.0.10
+openai==0.26.5
+python-decouple==3.7
