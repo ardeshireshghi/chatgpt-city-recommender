@@ -367,14 +367,17 @@
 
 
         function mapToRecommendationDomain(recommendations) {
-            return recommendations.map(item => {
-                return {
+            const recommendationList = Array.isArray(recommendations) ? recommendations : Object.values(recommendations);
+
+            return recommendationList.map(item => (
+                {
                     name: item.name || item.Name,
                     description: item.description || item.Description,
-                    interests: item.interests || item.Interest.split(',')
-                };
-            });
+                    interests: item.interests || item.Interest?.split(',') || item.Interests?.split(',')
+                }
+            ));
         }
+
         recommandationForm.onsubmit = async (e) => {
             e.preventDefault();
             const cityName = recommandationForm.elements.city.value;
