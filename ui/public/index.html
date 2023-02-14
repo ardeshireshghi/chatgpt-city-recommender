@@ -30,7 +30,7 @@
         .logo {
             font-size: 2.616rem;
             font-family: 'Pacifico', cursive;
-            text-shadow: 0px 2px 4px #e81f1570, 0px 8px 16px #ff7c3cc7, 0px 16px 32px #f4df2ec7;
+            text-shadow: 0px 2px 4px #e81f1570, 0px 8px 16px #ff7c3cbd, 0px 8px 16px #f4df2e42, 0px 8px 16px #5dd71982;
         }
 
         label {
@@ -56,7 +56,7 @@
         }
 
         input::placeholder {
-            color: #bacad2;
+            color: #7376b7;
         }
 
         input:focus,
@@ -144,7 +144,7 @@
         }
 
         .input__interests__tag--recommendation {
-            background: #a462a2;
+            background: #974548;
             color: white;
         }
 
@@ -156,9 +156,9 @@
         .recommendation {
             list-style: none;
             padding: 1rem;
-            background: #f9f8ff;
+            background: rgb(206 206 255 / 20%);
             border-radius: 4px;
-            border: 1px solid #efedff;
+            border: 1px solid rgb(206 206 255 / 60%);
             margin-bottom: 1rem;
             width: 600px;
             max-width: 100%;
@@ -167,7 +167,7 @@
         ul {
             padding: 0;
             margin: 0;
-            max-height: 100%;
+            max-height: calc(100% - 2rem);
         }
 
         .recommendation__header {
@@ -186,6 +186,11 @@
 
         .recommendation__description {
             color: rgb(22 6 71 / 60%);
+        }
+
+        .no-recommendation {
+            font-size: 1.2rem;
+            color: #a365ae;
         }
 
         @keyframes grow {
@@ -224,9 +229,9 @@
                     Interests
                     <div class="input__interests js-input__interests" contenteditable="true">
                         <div class="input__interests__tag js-input__interests__tag" contenteditable="false">
-                            French food
+                            Restaurants
                         </div>
-                        <div class="input__interest">&nbsp;</div>
+                        <div class="input__interest">&nbsp; </div>
                     </div>
                 </label>
 
@@ -235,23 +240,7 @@
         </section>
         <section class="review-form-section js-generated-recommendations">
             <ul>
-                <li class="recommendation">
-                    <div class="recommendation__header">
-                        <div class="recommendation__name">Parco Sempione</div>
-                        <div class="recommendation_interests">
-                            <div class="input__interests__tag input__interests__tag--recommendation">
-                                Live music
-                            </div>
-                            <div class="input__interests__tag input__interests__tag--recommendation">
-                                Coffee
-                            </div>
-                        </div>
-                    </div>
-                    <div class="recommendation__description">
-                        This park is home to a variety of live music events throughout the year, including jazz and
-                        classical concerts.
-                    </div>
-                </li>
+                <span class="no-recommendation">No recommendations yet!</span>
             </ul>
         </section>
     </form>
@@ -261,7 +250,7 @@
         const commentsSection = document.querySelector('.js-service-comments');
         const continueBtn = document.querySelector('.js-btn-continue');
         const recommandationForm = document.forms[0];
-        let interestTags = new Set(['French food']);
+        let interestTags = new Set(['Restaurants']);
 
         const interestsEditor = document.querySelector('.js-input__interests');
 
@@ -275,11 +264,13 @@
         }
 
         function createTag(interestsEditor, tagValue) {
+            const trimmedTagValue = tagValue.trim();
+
             // Add tag to the set
-            interestTags.add(tagValue);
+            interestTags.add(trimmedTagValue);
 
             // Render new tag
-            renderNewTag(interestsEditor, tagValue);
+            renderNewTag(interestsEditor, trimmedTagValue);
         }
 
         function removeLastTag() {
@@ -335,6 +326,7 @@
                 return item;
             });
 
+            recommendationsSection.textContent = '';
             recommendationsSection.append(...els);
             setTimeout(() => recommendationsSection.scrollIntoView({
                 behavior: 'smooth',
