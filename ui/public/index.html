@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgba(22, 6, 71, 1);
+        }
+
+        label {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            color: rgba(22, 6, 71, 1);
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            margin-top: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1.3rem;
+            background: #e6efef;
+            border: 2px solid #e6efef;
+            outline: none;
+            border-radius: 5px;
+            transition: border-color 0.5s;
+            color: rgba(22, 6, 71, 1);
+        }
+
+        input::placeholder {
+            color: #bacad2;
+        }
+
+        input:focus,
+        .input__interests:focus {
+            border: 2px solid #ff5722;
+            animation: grow 0.5s ease 1;
+        }
+
+        .input__interests {
+            display: flex;
+            gap: 1rem;
+            max-width: 100%;
+            min-width: 400px;
+            overflow: scroll;
+            margin-top: 0.5rem;
+            padding: 1rem 1rem;
+            font-size: 1rem;
+            background: #e6efef;
+            border: 2px solid #e6efef;
+            outline: none;
+            border-radius: 5px;
+            transition: border-color 0.5s;
+            color: rgba(22, 6, 71, 1);
+        }
+
+        .review-form-section {
+            display: flex;
+            height: 100dvh;
+            width: 100dvw;
+            flex: 1 0 auto;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        button {
+            border-radius: 9999px;
+            padding: 1rem 4rem;
+            font-size: 1.2rem;
+            background-color: #08cca1;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        button[type="submit"] {
+            text-align: left;
+        }
+
+        .review-form {
+            display: flex;
+            scroll-behavior: smooth;
+            overflow: scroll;
+            max-width: 100%;
+        }
+
+        .input__comments {
+            max-width: 100%;
+            width: 500px;
+        }
+
+        .recommendation-text {
+            width: 600px;
+            min-height: 100px;
+            max-width: 100%;
+            font-size: 1.616rem;
+            color: #057c62;
+            font-family: monospace;
+        }
+
+        .input__interests__tag {
+            width: max-content;
+            font-size: 1rem;
+            background: rgb(0 0 0 / 16%);
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            color: #703727;
+            border-radius: 4px;
+            flex-basis: auto;
+            flex-shrink: 0;
+        }
+
+        .input__interests__tag--recommendation {
+            background: #08cca1;
+            color: white;
+        }
+
+        .input__interest {
+            display: flex;
+            align-items: center;
+        }
+
+        .recommendation {
+            list-style: none;
+            padding: 1rem;
+            background: rgb(175 199 182 / 19%);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            width: 600px;
+            max-width: 100%;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            max-height: 100%;
+        }
+
+        .recommendation__header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.3rem;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .recommendation_interests {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .recommendation__description {
+            color: rgb(22 6 71 / 60%);
+        }
+
+        @keyframes grow {
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <form class="review-form" method="POST">
+        <section id="service-name" class="review-form-section js-service-name" data-next-section="section-interests">
+            <div class="form-control">
+                <label for="name">
+                    City Name
+                    <input type="text" name="city" placeholder="e.g. Florence" required />
+                </label>
+                <button type="text" class="js-btn-continue">Continue</button>
+
+            </div>
+        </section>
+        <section id="section-interests" class="review-form-section js-service-interests">
+            <div class="form-control">
+                <label for="interests">
+                    Interests
+                    <div class="input__interests js-input__interests" contenteditable="true">
+                        <div class="input__interests__tag js-input__interests__tag" contenteditable="false">
+                            French food
+                        </div>
+                        <div class="input__interest"><br> </div>
+                    </div>
+                </label>
+
+                <button type="submit">Show Recommendations</button>
+            </div>
+        </section>
+        <section class="review-form-section js-generated-recommendations">
+            <ul>
+                <li class="recommendation">
+                    <div class="recommendation__header">
+                        <div class="recommendation__name">Parco Sempione</div>
+                        <div class="recommendation_interests">
+                            <div class="input__interests__tag input__interests__tag--recommendation">
+                                Live music
+                            </div>
+                            <div class="input__interests__tag input__interests__tag--recommendation">
+                                Coffee
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recommendation__description">
+                        This park is home to a variety of live music events throughout the year, including jazz and
+                        classical concerts.
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </form>
+    <script type="module">
+        import { getRecommandations } from '/recommendation-api.js';
+
+        const commentsSection = document.querySelector('.js-service-comments');
+        const continueBtn = document.querySelector('.js-btn-continue');
+        const recommandationForm = document.forms[0];
+        let interestTags = new Set(['French food']);
+
+        const interestsEditor = document.querySelector('.js-input__interests');
+
+        function renderNewTag(container, value) {
+            const tagEl = document.createElement('div');
+            tagEl.className = 'input__interests__tag js-input__interests__tag';
+            tagEl.contentEditable = false;
+            tagEl.textContent = value;
+
+            container.insertBefore(tagEl, container.querySelector('.input__interest'));
+        }
+
+        function createTag(interestsEditor, tagValue) {
+            // Add tag to the set
+            interestTags.add(tagValue);
+
+            // Render new tag
+            renderNewTag(interestsEditor, tagValue);
+        }
+
+        function removeLastTag() {
+            const lastTagValue = Array.from(interestTags).pop();
+
+            document.querySelectorAll('.js-input__interests__tag')[interestTags.size - 1].remove();
+            interestTags.delete(lastTagValue);
+        }
+
+        interestsEditor.addEventListener('input', (e) => {
+            const editorTextValue = e.target.textContent;
+
+            if (editorTextValue.includes(',')) {
+                const newValueInput = e.target.querySelector('.input__interest');
+                const value = newValueInput.textContent.replace(',', '');
+                newValueInput.innerHTML = '<br> ';
+
+                createTag(interestsEditor, value);
+            }
+        });
+
+        interestsEditor.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace') {
+                const newValueInput = e.currentTarget.querySelector('.input__interest');
+                if (newValueInput.textContent.trim() === '') {
+                    e.preventDefault();
+                    if (interestTags.size > 0) {
+                        removeLastTag();
+                    } else {
+                        newValueInput.innerHTML = '<br> ';
+                    }
+
+                }
+            }
+        });
+
+        function renderRecommendations(recommendations) {
+            const recommendationsSection = document.querySelector('.js-generated-recommendations ul');
+            const els = recommendations.map(recommendation => {
+                const { name, interests, description } = recommendation;
+                const item = document.createElement('li');
+                item.className = 'recommendation';
+                item.innerHTML = `<div class="recommendation__header">
+                        <div class="recommendation__name">${name}</div>
+                        <div class="recommendation_interests">
+                            ${interests.map(interestName => `<div class="input__interests__tag input__interests__tag--recommendation">${interestName}</div>`
+                ).join('')}
+                        </div></div>
+                        <div class="recommendation__description">
+                            ${description}
+                        </div>`;
+
+                return item;
+            });
+
+            recommendationsSection.append(...els);
+            setTimeout(() => recommendationsSection.scrollIntoView({
+                behavior: 'smooth',
+                inline: 'center'
+            }), 50);
+
+        }
+
+        window.addEventListener('load', () => {
+            const nameSection = document.querySelector('.js-service-name');
+            nameSection.scrollIntoView({
+                behavior: 'smooth',
+                inline: 'center'
+            });
+        });
+
+        recommandationForm.addEventListener('click', (e) => {
+            const target = e.target;
+
+            if (target.closest('.js-btn-continue')) {
+                e.preventDefault();
+                const currentSection = e.target.closest('.review-form-section');
+                const currentSectionInput = currentSection.querySelector('input[type="text"]');
+
+                if ((currentSectionInput && !currentSectionInput.checkValidity())) {
+                    return;
+                }
+
+                const nextSection = document.querySelector('#' + currentSection.getAttribute('data-next-section'))
+                nextSection.scrollIntoView({
+                    behavior: 'smooth',
+                    inline: 'center'
+                });
+
+                nextSection.querySelector('input[type="text"]') && nextSection.querySelector('input[type="text"]').focus();
+            }
+        });
+
+        document.querySelectorAll('.js-custom-select').forEach(customSelectEl => {
+            customSelectEl.addEventListener('click', (e) => {
+                const target = e.target;
+                const inputName = customSelectEl.getAttribute('data-name');
+                const inputValuePrefix = customSelectEl.getAttribute('data-value-prefix');
+                const newValue = target.getAttribute('data-value');
+                const selectedOption = customSelectEl.querySelector('.is-selected');
+
+                target.classList.toggle('is-selected');
+                selectedOption?.classList.remove('is-selected');
+
+                if (target.classList.contains('is-selected')) {
+                    reviewData.set(inputName, `${inputValuePrefix} was ${ratingTextFromValue(newValue)}`)
+                } else {
+                    reviewData.delete(inputName);
+                }
+            })
+        });
+
+        function mapToDomain(recommendations) {
+            return recommendations.map(item => {
+                return {
+                    name: item.name || item.Name,
+                    description: item.description || item.Description,
+                    interests: item.interests || item.Interest.split(',')
+                };
+            });
+        }
+        recommandationForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const cityName = recommandationForm.elements.city.value;
+            const submitBtn = e.target.querySelector('[type="submit"]');
+
+            // Loading state
+            submitBtn.style.opacity = '0.5';
+            submitBtn.textContent = 'Generating recommendations...';
+
+            const interests = Array.from(interestTags);
+            let recommendations;
+
+            try {
+                recommendations = await getRecommandations({ city: cityName, interests });
+                console.log(recommendations)
+                renderRecommendations(mapToDomain(recommendations));
+            } catch (err) {
+                alert('Error creating review');
+                submitBtn.style.opacity = '1';
+                submitBtn.textContent = 'Retry';
+            }
+        };
+    </script>
+</body>
+
+</html>

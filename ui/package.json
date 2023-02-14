@@ -1,0 +1,15 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn create-config",
+    "predev": "yarn build",
+    "dev": "serve public",
+    "create-config": "node scripts/create-config.js"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
