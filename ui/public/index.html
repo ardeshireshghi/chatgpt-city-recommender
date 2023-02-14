@@ -12,11 +12,11 @@
 
 
         .header__mast {
-            height: 80px;
-            background: #54599700;
-            box-shadow: 0px 2px 4px #00000036;
+            height: 100px;
+            background: #545997;
+            border-bottom: 1px solid #0000001c;
             box-sizing: border-box;
-            color: #545997;
+            color: white;
             display: flex;
             align-items: center;
         }
@@ -30,6 +30,7 @@
         .logo {
             font-size: 2.616rem;
             font-family: 'Pacifico', cursive;
+            text-shadow: 0px 2px 4px #e81f1570, 0px 8px 16px #ff7c3cc7, 0px 16px 32px #f4df2ec7;
         }
 
         label {
@@ -46,8 +47,8 @@
             margin-top: 0.5rem;
             padding: 1rem 2rem;
             font-size: 1.3rem;
-            background: #e6efef;
-            border: 2px solid #e6efef;
+            background: #efedff;
+            border: 2px solid #efedff;
             outline: none;
             border-radius: 5px;
             transition: border-color 0.5s;
@@ -60,7 +61,7 @@
 
         input:focus,
         .input__interests:focus {
-            border: 2px solid #ff5722;
+            border: 2px solid #e57195;
             animation: grow 0.5s ease 1;
         }
 
@@ -72,9 +73,11 @@
             overflow: scroll;
             margin-top: 0.5rem;
             padding: 1rem 1rem;
+            min-height: 54px;
+            box-sizing: border-box;
             font-size: 1rem;
-            background: #e6efef;
-            border: 2px solid #e6efef;
+            background: #efedff;
+            border: 2px solid #efedff;
             outline: none;
             border-radius: 5px;
             transition: border-color 0.5s;
@@ -83,7 +86,7 @@
 
         .review-form-section {
             display: flex;
-            height: calc(100dvh - 80px);
+            height: calc(100dvh - 100px);
             width: 100dvw;
             flex: 1 0 auto;
             flex-direction: column;
@@ -96,7 +99,7 @@
             border-radius: 9999px;
             padding: 1rem 4rem;
             font-size: 1.2rem;
-            background-color: #08cca1;
+            background-color: #a462a2;
             color: white;
             cursor: pointer;
             border: none;
@@ -134,14 +137,14 @@
             padding: 0.5rem;
             display: flex;
             gap: 0.5rem;
-            color: #703727;
+            color: #974548;
             border-radius: 4px;
             flex-basis: auto;
             flex-shrink: 0;
         }
 
         .input__interests__tag--recommendation {
-            background: #08cca1;
+            background: #a462a2;
             color: white;
         }
 
@@ -153,8 +156,9 @@
         .recommendation {
             list-style: none;
             padding: 1rem;
-            background: rgb(175 199 182 / 19%);
+            background: #f9f8ff;
             border-radius: 4px;
+            border: 1px solid #efedff;
             margin-bottom: 1rem;
             width: 600px;
             max-width: 100%;
@@ -222,7 +226,7 @@
                         <div class="input__interests__tag js-input__interests__tag" contenteditable="false">
                             French food
                         </div>
-                        <div class="input__interest"><br> </div>
+                        <div class="input__interest">&nbsp;</div>
                     </div>
                 </label>
 
@@ -291,7 +295,7 @@
             if (editorTextValue.includes(',')) {
                 const newValueInput = e.target.querySelector('.input__interest');
                 const value = newValueInput.textContent.replace(',', '');
-                newValueInput.innerHTML = '<br> ';
+                newValueInput.innerHTML = '&nbsp;';
 
                 createTag(interestsEditor, value);
             }
