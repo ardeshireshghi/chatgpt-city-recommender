@@ -84,9 +84,10 @@
             color: rgba(22, 6, 71, 1);
         }
 
-        .review-form-section {
+        .recommendation-form-section {
             display: flex;
             height: calc(100dvh - 100px);
+            scroll-snap-align: start;
             width: 100dvw;
             flex: 1 0 auto;
             flex-direction: column;
@@ -109,9 +110,10 @@
             text-align: left;
         }
 
-        .review-form {
+        .recommendation-form {
             display: flex;
             scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
             overflow: scroll;
             max-width: 100%;
         }
@@ -208,12 +210,13 @@
 <body>
     <header class="header__mast">
         <div class="header__mast__inner">
-            <div class="logo">RecommendMe</div>
+            <div class="logo">CityRecommender</div>
         </div>
 
     </header>
-    <form class="review-form" method="POST">
-        <section id="service-name" class="review-form-section js-service-name" data-next-section="section-interests">
+    <form class="recommendation-form" method="POST">
+        <section id="service-name" class="recommendation-form-section js-service-name"
+            data-next-section="section-interests">
             <div class="form-control">
                 <label for="name">
                     City Name
@@ -223,7 +226,7 @@
 
             </div>
         </section>
-        <section id="section-interests" class="review-form-section js-service-interests">
+        <section id="section-interests" class="recommendation-form-section js-service-interests">
             <div class="form-control">
                 <label for="interests">
                     Interests
@@ -238,7 +241,7 @@
                 <button type="submit">Recommend places</button>
             </div>
         </section>
-        <section class="review-form-section js-generated-recommendations">
+        <section class="recommendation-form-section js-generated-recommendations">
             <ul>
                 <span class="no-recommendation">No recommendations yet!</span>
             </ul>
@@ -348,7 +351,7 @@
 
             if (target.closest('.js-btn-continue')) {
                 e.preventDefault();
-                const currentSection = e.target.closest('.review-form-section');
+                const currentSection = e.target.closest('.recommendation-form-section');
                 const currentSectionInput = currentSection.querySelector('input[type="text"]');
 
                 if ((currentSectionInput && !currentSectionInput.checkValidity())) {
