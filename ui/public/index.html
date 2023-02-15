@@ -422,7 +422,7 @@
                 {
                     name: item.name || item.Name,
                     description: item.description || item.Description,
-                    interests: item.interests || item.Interest?.split(',') || item.Interests?.split(',')
+                    interests: item.interests || item?.Interest?.split(',') || item?.Interests?.split(',')
                 }
             ));
         }
