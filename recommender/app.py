@@ -20,3 +20,7 @@ def write_review():
             "recommendations": get_recommendations(city, interests, count)
         }
     }, indent=4)
+
+
+if __name__ == '__main__':
+    app.run(debug=False, host='0.0.0.0')
