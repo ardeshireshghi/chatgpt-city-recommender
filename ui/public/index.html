@@ -2,12 +2,26 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
+    <title>City Recommender - Discover places in Cities based on your interests</title>
+    <meta name="description" content="Discover places in Cities based on your interests">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta name="theme-color" content="#545997">
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
             color: rgba(22, 6, 71, 1);
             padding: 0;
             margin: 0;
+        }
+
+        body * {
+            box-sizing: border-box;
         }
 
 
@@ -28,9 +42,15 @@
         }
 
         .logo {
-            font-size: 2.616rem;
+            font-size: 1.616rem;
             font-family: 'Pacifico', cursive;
             text-shadow: 0px 2px 4px #e81f1570, 0px 8px 16px #ff7c3cbd, 0px 8px 16px #f4df2e42, 0px 8px 16px #5dd71982;
+        }
+
+        @media screen and (min-width: 400px) {
+            .logo {
+                font-size: 2.616rem;
+            }
         }
 
         label {
@@ -69,7 +89,7 @@
             display: flex;
             gap: 1rem;
             max-width: 100%;
-            min-width: 400px;
+            min-width: min(400px, 100%);
             overflow: scroll;
             margin-top: 0.5rem;
             padding: 1rem 1rem;
@@ -91,20 +111,27 @@
             width: 100dvw;
             flex: 1 0 auto;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
-
         }
 
         button {
             border-radius: 9999px;
-            padding: 1rem 4rem;
-            font-size: 1.2rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
             background-color: #a462a2;
             color: white;
             cursor: pointer;
             border: none;
         }
+
+        @media screen and (min-width: 400px) {
+            button {
+                padding: 1rem 4rem;
+                font-size: 1.2rem;
+            }
+        }
+
 
         button[type="submit"] {
             text-align: left;
@@ -167,9 +194,12 @@
         }
 
         ul {
-            padding: 0;
+            padding: 1rem;
             margin: 0;
             max-height: calc(100% - 2rem);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .recommendation__header {
@@ -193,6 +223,13 @@
         .no-recommendation {
             font-size: 1.2rem;
             color: #a365ae;
+        }
+
+        .form-control {
+            padding: 1rem;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
         }
 
         @keyframes grow {
