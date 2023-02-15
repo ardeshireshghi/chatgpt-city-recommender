@@ -215,18 +215,17 @@
 
     </header>
     <form class="recommendation-form" method="POST">
-        <section id="service-name" class="recommendation-form-section js-service-name"
-            data-next-section="section-interests">
+        <section id="city" class="recommendation-form-section js-city-name" data-next-section="interests">
             <div class="form-control">
                 <label for="name">
-                    City Name
+                    Name of the city you want to visit
                     <input type="text" name="city" placeholder="e.g. Florence" required />
                 </label>
                 <button type="text" class="js-btn-continue">Continue</button>
 
             </div>
         </section>
-        <section id="section-interests" class="recommendation-form-section js-service-interests">
+        <section id="interests" class="recommendation-form-section js-service-interests">
             <div class="form-control">
                 <label for="interests">
                     Interests
@@ -250,8 +249,6 @@
     <script type="module">
         import { getRecommandations } from '/recommendation-api.js';
 
-        const commentsSection = document.querySelector('.js-service-comments');
-        const continueBtn = document.querySelector('.js-btn-continue');
         const recommandationForm = document.forms[0];
         let interestTags = new Set(['Restaurants']);
 
@@ -305,7 +302,6 @@
                     } else {
                         newValueInput.innerHTML = '<br> ';
                     }
-
                 }
             }
         });
@@ -331,6 +327,7 @@
 
             recommendationsSection.textContent = '';
             recommendationsSection.append(...els);
+
             setTimeout(() => recommendationsSection.scrollIntoView({
                 behavior: 'smooth',
                 inline: 'center'
@@ -338,18 +335,29 @@
 
         }
 
-        window.addEventListener('load', () => {
-            const nameSection = document.querySelector('.js-service-name');
-            nameSection.scrollIntoView({
-                behavior: 'smooth',
-                inline: 'center'
-            });
-        });
+        const scrollToSection = () => {
+            const cityNameSection = document.querySelector('.js-city-name');
+            if (window.location.pathname === '/') {
+                cityNameSection.scrollIntoView({
+                    behavior: 'smooth',
+                    inline: 'center'
+                });
+            } else if (window.location.pathname === '/interests') {
+                document.querySelector('#interests').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+
+        };
+        window.addEventListener('load', scrollToSection);
+        window.addEventListener('popstate', scrollToSection);
+        window.addEventListener('pushstate', scrollToSection);
 
         recommandationForm.addEventListener('click', (e) => {
             const target = e.target;
+            const isContinueButtonClicked = target.closest('.js-btn-continue');
 
-            if (target.closest('.js-btn-continue')) {
+            if (isContinueButtonClicked) {
                 e.preventDefault();
                 const currentSection = e.target.closest('.recommendation-form-section');
                 const currentSectionInput = currentSection.querySelector('input[type="text"]');
@@ -358,10 +366,11 @@
                     return;
                 }
 
-                const nextSection = document.querySelector('#' + currentSection.getAttribute('data-next-section'))
+                const nextSectionName = currentSection.getAttribute('data-next-section');
+                history.pushState({}, '', nextSectionName);
+                const nextSection = document.querySelector('#' + nextSectionName);
                 nextSection.scrollIntoView({
                     behavior: 'smooth',
-                    inline: 'center'
                 });
 
                 nextSection.querySelector('input[type="text"]') && nextSection.querySelector('input[type="text"]').focus();
