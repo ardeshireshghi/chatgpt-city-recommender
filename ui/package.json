@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn create-config",
-    "predev": "yarn build",
+    "predev": "RECOMMENDATION_API_ENDPOINT=http://localhost:5000/api/v1/recommendation yarn build",
     "dev": "serve public",
     "create-config": "node scripts/create-config.js"
   },
