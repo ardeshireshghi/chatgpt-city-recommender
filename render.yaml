@@ -1,0 +1,31 @@
+ervices:
+  # A Docker web service
+  - type: web
+    name: city-recommender-api
+    env: docker
+    repo: https://github.com/ardeshireshghi/chatgpt-city-recommender
+    region: frankfurt # optional (defaults to oregon)
+    plan: free # optional (defaults to starter)
+    branch: main # optional (defaults to master)
+    rootDir: ./
+    numInstances: 1 # optional (defaults to 1)
+    healthCheckPath: /healthz
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn recommender.wsgi:app
+    autoDeploy: true
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+
+  # A static site
+  - type: web
+    name: city-recommender
+    env: static
+    rootDir: ./ui
+    buildCommand: yarn build
+    staticPublishPath: ./ui/public
+    pullRequestPreviewsEnabled: true # optional
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - ui/**/*
