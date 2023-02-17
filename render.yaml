@@ -21,9 +21,9 @@ services:
   - type: web
     name: city-recommender
     env: static
-    rootDir: ./ui
+    rootDir: ui
     buildCommand: yarn build
-    staticPublishPath: ./ui/public
+    staticPublishPath: public
     pullRequestPreviewsEnabled: true # optional
     autoDeploy: true
     buildFilter:
