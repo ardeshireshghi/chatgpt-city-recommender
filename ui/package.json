@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "city-recommender-ui",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
