@@ -8,6 +8,13 @@ app = Flask(__name__)
 CORS(app)
 
 
+@app.route('/healthz', methods=['GET'])
+def health():
+    """Health endpoint"""
+
+    return ''
+
+
 @app.route('/api/v1/recommendation', methods=['POST'])
 def write_review():
     """Creates a list of recommendations based on interest"""
