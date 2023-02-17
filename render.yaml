@@ -2,7 +2,7 @@ services:
   # A Docker web service
   - type: web
     name: city-recommender-api
-    env: docker
+    env: python
     repo: https://github.com/ardeshireshghi/chatgpt-city-recommender
     region: frankfurt # optional (defaults to oregon)
     plan: free # optional (defaults to starter)
